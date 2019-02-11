@@ -8,7 +8,6 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Устанавливаем дисплей
 
-
 int gg = 0 ;
 String StringMZDVV;
 String StringMS;
@@ -33,7 +32,6 @@ int ZS;            //Значение оСвещёности
 #define  R  9      //пин реле   
 int MS  =  800 ;  //Значение фоторезистора при котором будет происходить переключение реле
 
-
 #define  TiV  7   //пин дачитка темературы и влажности воздуха
 int ZV;      //Значение  влажности воздуха
 int ZT;      //Значение температуры
@@ -55,7 +53,6 @@ String readString = String(30);
 EthernetServer server(80);      //инициализация библиотеки Ethernet server library
 boolean newInfo = 0; //переменная для новой информации
 
-
 void setup()
 {
   Serial.begin(9600);
@@ -65,14 +62,11 @@ void setup()
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
 
-
   dht.begin();
   pinMode(PDVV, OUTPUT);
   pinMode(N, OUTPUT);
   pinMode(R, OUTPUT);
   pinMode(OS, OUTPUT);
-
-
 
   lcd.init();
   lcd.backlight();// Включаем подсветку дисплея
@@ -99,11 +93,8 @@ void loop()
   ezernet(& MZDVV, & MS, &PMAXDDV, &PMINDDV, &MDDV);
 }
 
-
 void sbordanih()
 {
-
-
   //получение влажности почвы
   digitalWrite(PDVV, HIGH);      //включение питания датчика
   delay(10);
@@ -118,7 +109,6 @@ void sbordanih()
   Serial.println("Освещённость: " + String(ZS));
   //получение данных освещёности
 
-
   //получение влажности воздуха и температуры
   ZV = dht.readHumidity();               // Считываем влажность
   ZT = dht.readTemperature();            // Считываем температуру
@@ -129,13 +119,11 @@ void sbordanih()
   Serial.println("Влажность: " + String(ZV) + "%\t" + "Температура: " + String(ZT) + "*C ");
   //получение влажности воздуха и температуры
 
-
   //получение дистанции до воды
   DDV =  ultrasonic.Ranging(CM); // дистанция в см
   PDDV = abs( ( DDV - PMAXDDV ) / ((PMINDDV - PMAXDDV) * 0.01) - 100 );
   Serial.println("Уровень жидкости в резервуаре: " + String(PDDV) + "%");
   //получение дистанции до воды
-
 
   //вывод на дисплей
   lcd.setCursor(3, 0);
@@ -171,7 +159,6 @@ void svet()
   }
 }
 
-
 void kolvody()
 {
   if (MDDV > PDDV) {
@@ -182,12 +169,8 @@ void kolvody()
   }
 }
 
-
-
 void ezernet(int * MZDVV, int * MS, int * PMAXDDV, int * PMINDDV, int * MDDV)
 {
-
-
   // =============Создаем клиентское соединение====================
   EthernetClient client = server.available();
   if (client) {
@@ -200,7 +183,6 @@ void ezernet(int * MZDVV, int * MS, int * PMAXDDV, int * PMINDDV, int * MDDV)
         }
 
         Serial.print( c);
-
         /*
           if (newInfo && c == ' '){
           newInfo = 0; }
@@ -217,7 +199,6 @@ void ezernet(int * MZDVV, int * MS, int * PMAXDDV, int * PMINDDV, int * MDDV)
           Serial.println ("Выключить");
           digitalWrite (13, LOW);}
           } */
-
 
         if (c == '\n' ) {
           // =============Формируем HTML-страницу==========================
@@ -335,7 +316,6 @@ void ezernet(int * MZDVV, int * MS, int * PMAXDDV, int * PMINDDV, int * MDDV)
         }
       }
     }
-
   }
   delay(1000);
 }
